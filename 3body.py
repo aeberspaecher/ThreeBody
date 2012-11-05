@@ -30,7 +30,7 @@ def L(xVals, yVals, xDotVals, yDotVals):
     mit Hilfer zweier Skalarprokukte schreiben.
     """
 
-    return 1.0/3.0*(np.dot(yVals, xDotVals) + np.dot(xVals, yDotVals))  # m = 1/3
+    return 1.0/3.0*(np.dot(yVals, xDotVals) - np.dot(xVals, yDotVals))  # m = 1/3
 
 
 def E(xVals, yVals, xDotVals, yDotVals):
@@ -210,7 +210,7 @@ if(__name__ == '__main__'):
     x3 = 0.0
     # nutze L(...) = 0 und E + 0.5 = 0 (siehe Paper)
     x, infodict, ier, mesg = fsolve(lambda r: np.array( [L(xVals=(r[0], r[1], x3), yVals=np.zeros(3),
-                                                           xDotVals=xDot, yDotVals=yDot),
+                                                           xDotVals=xDot, yDotVals=yDot),  # L = 0
                                                          E(xVals=(r[0], r[1], x3), yVals=np.zeros(3),
                                                            xDotVals=xDot, yDotVals=yDot) + 0.5] ),  # E = -0.5!
                                          x0=(-0.1, +0.1), full_output=True)
@@ -221,7 +221,7 @@ if(__name__ == '__main__'):
         print("Startpositionen x_1 = %s; x_2 = %s"%(x1, x2))
 
     integrator = ode(xiDot)  # Integrator erzeugen
-    integrator.set_integrator("dop853")  # Dormand-Price-Integration
+    integrator.set_integrator("dop853")  # Dormand-Prince-Integration
 
     # Anfangsvektor xi0 erzeugen:
     xi0 = np.array([x1, x2, x3, 0.0, 0.0, 0.0, xDot[0], xDot[1], xDot[2], yDot[0], yDot[1], yDot[2]])
